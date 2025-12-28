@@ -1,9 +1,11 @@
-This fork fixes issue where servo moves during jog operations.
+This fork attempts to fix issue where servo moves during jog operations.
 
 It's not totally clear why this happens, but it seems to be related to calling servo_stop when the 
 servo is inverted. This fork pretty much just reverts that part to the original grbl code. 
 
-The servo still seems to work as intended, and I'm not sure why the original author had this change in there. 
+This fixes the random movement during jogging, but the servo still loses posision randomly so there seems to be another issue to solve.
+
+
 
 # grbl-1-1h-servo
 
