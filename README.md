@@ -1,3 +1,10 @@
+This fork fixes issue where servo moves during jog operations.
+
+It's not totally clear why this happens, but it seems to be related to calling servo_stop when the 
+servo is inverted. This fork pretty much just reverts that part to the original grbl code. 
+
+The servo still seems to work as intended, and I'm not sure why the original author had this change in there. 
+
 # grbl-1-1h-servo
 
 This is a special version of [grbl 1.1h version](https://github.com/gnea/grbl/releases/tag/v1.1h.20190825) with servo support.
