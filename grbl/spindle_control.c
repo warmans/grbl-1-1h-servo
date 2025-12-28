@@ -136,6 +136,9 @@ void spindle_stop()
   void spindle_set_speed(uint8_t pwm_value)
   {
     SPINDLE_OCR_REGISTER = pwm_value; // Set PWM output level.
+
+    // This was reverted to original grbl code, since the grbl-servo changes cause random movement in the
+    // servo during jog operations. calling spindle_stop doesn't seem necessary anyway.
     #ifdef SPINDLE_ENABLE_OFF_WITH_ZERO_SPEED
       if (pwm_value == SPINDLE_PWM_OFF_VALUE) {
         spindle_stop();
@@ -149,15 +152,7 @@ void spindle_stop()
       }
     #else
       if (pwm_value == SPINDLE_PWM_OFF_VALUE) {
-        if (!(settings.flags & BITFLAG_LASER_MODE)) {                                                   // RC Servo
-          #ifndef RC_SERVO_SHORT                                                                        // RC Servo
-            SPINDLE_TCCRA_REGISTER &= ~(1<<SPINDLE_COMB_BIT); // Disable PWM. Output voltage is zero.   // RC Servo
-          #else                                                                                         // RC Servo
-            spindle_stop();                                                                             // RC Servo
-          #endif                                                                                        // RC Servo
-        } else {                                                                                        // RC Servo
-          SPINDLE_TCCRA_REGISTER &= ~(1<<SPINDLE_COMB_BIT); // Disable PWM. Output voltage is zero.     // RC Servo
-        }                                                                                               // RC Servo
+        SPINDLE_TCCRA_REGISTER &= ~(1<<SPINDLE_COMB_BIT); // Disable PWM. Output voltage is zero.
       } else {
         SPINDLE_TCCRA_REGISTER |= (1<<SPINDLE_COMB_BIT); // Ensure PWM output is enabled.
       }
